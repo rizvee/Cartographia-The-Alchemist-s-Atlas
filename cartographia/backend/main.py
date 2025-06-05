@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from .game_logic import game_map, get_map_details, player_hand, get_player_hand_details, apply_element_to_tile # game_map and player_hand are initialized in game_logic
+from .game_logic import game_map, get_game_state, player_hand, get_player_hand_details, apply_element_to_tile # game_map and player_hand are initialized in game_logic
 from .models import ElementalSeed, Tile # Tile might be needed for request/response models later
 
 # --- Pydantic Models for Request/Response ---
@@ -18,39 +18,90 @@ app = FastAPI()
 
 # --- API Endpoints ---
 
-@app.get("/api/map_details")
-async def api_get_map_details():
+@app.get("/api/game_state") # Renamed endpoint
+async def api_get_game_state(): # Renamed function
     """
-    Returns the current state of the game map including tile terrain types.
+    Returns the current combined game state including map details and player hand.
     """
-    return get_map_details()
+    return get_game_state() # Calls updated game_logic function
 
 @app.post("/api/apply_element")
 async def api_apply_element(request: ApplyElementRequest):
     """
-    Applies an element to a specific tile and returns the updated map details.
+    Applies an element to a specific tile (if player has the seed)
+    and returns the updated game state.
     """
-    print(f"Received request to apply '{request.element_name}' to ({request.x},{request.y})") # Server-side log
+    print(f"Received request to apply '{request.element_name}' to ({request.x},{request.y})")
 
-    # Validate element name if necessary (could also be done in ElementalSeed or game_logic)
-    # For now, assume apply_element_to_tile handles unknown elements gracefully.
-
-    # Call the game logic function
-    # The `apply_element_to_tile` function in game_logic already has a default strength.
-    # We can expose 'strength' in ApplyElementRequest later if needed.
-    transformation_occurred = apply_element_to_tile(
+    # Call the updated game logic function, now passing the player_hand instance
+    success = apply_element_to_tile(
         current_game_map=game_map,
+        hand_instance=player_hand, # Pass the global player_hand from game_logic
         x=request.x,
         y=request.y,
         element_name=request.element_name
+        # Default strength is used from game_logic.apply_element_to_tile
     )
 
-    # Log if transformation happened (optional)
-    # print(f"Transformation occurred on primary tile: {transformation_occurred}")
+    if not success:
+        # This could be due to various reasons handled in apply_element_to_tile:
+        # - Tile does not exist
+        # - Unknown element type
+        # - Seed not in hand
+        # - Failed to remove seed (safeguard)
+        # A more specific error message could be derived from apply_element_to_tile if it returned error codes/types.
+        # For now, a general 400 for "failed to apply" is reasonable.
+        # The console logs in game_logic will give more details on the server side.
+        raise HTTPException(status_code=400, detail=f"Failed to apply element '{request.element_name}'. Player may not have the seed, or invalid target/element.")
 
-    # Return the updated map details
-    # This ensures the frontend gets the full current state after any changes (including echoes)
-    return get_map_details()
+    # Return the updated game state
+    return get_game_state()
+
+
+@app.post("/api/undo")
+async def api_undo_action():
+    """
+    Undoes the last successfully applied element action.
+    Returns the game state after the undo.
+    """
+    from .game_logic import undo_last_action # Import here to avoid circularity if game_logic imports main for some reason (not current)
+
+    success = undo_last_action()
+    if not success:
+        raise HTTPException(status_code=400, detail="Nothing to undo.")
+    return get_game_state()
+
+@app.post("/api/redo")
+async def api_redo_action():
+    """
+    Redoes the last undone action.
+    Returns the game state after the redo.
+    """
+    from .game_logic import redo_next_action # Import here
+
+    success = redo_next_action()
+    if not success:
+        raise HTTPException(status_code=400, detail="Nothing to redo.")
+    return get_game_state()
+
+@app.post("/api/save_map")
+async def api_save_map():
+    """Saves the current game state to the server's filesystem."""
+    from .game_logic import save_game_to_file # Import here or at top if preferred
+    if save_game_to_file():
+        return {"message": "Game saved successfully."}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to save game.")
+
+@app.post("/api/load_map")
+async def api_load_map():
+    """Loads the game state from the server's filesystem and returns the loaded state."""
+    from .game_logic import load_game_from_file # Import here
+    if load_game_from_file():
+        return get_game_state() # Return the full game state after successful load
+    else:
+        # load_game_from_file prints specific errors to server console
+        raise HTTPException(status_code=500, detail="Failed to load game. File might be missing or corrupted.")
 
 
 # The existing main() function and its test code are below.

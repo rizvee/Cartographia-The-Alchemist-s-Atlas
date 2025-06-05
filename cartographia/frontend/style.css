@@ -73,7 +73,44 @@ h1 {
     background-color: #f0f0f0; /* Default for unstyled tiles */
     color: #333; /* Default text color */
     box-sizing: border-box; /* Important if using width/height with padding/border */
+    cursor: pointer; /* Indicate tiles are clickable */
 }
+
+.tile:hover {
+    outline: 2px solid #007bff; /* Highlight on hover */
+}
+
+
+/* Player Hand Display */
+#player-hand-container {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #eef;
+    border-radius: 4px;
+}
+
+#player-hand-container h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+#player-hand-contents span {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 0.9em;
+    padding: 3px 6px;
+    background-color: #dde;
+    border-radius: 3px;
+}
+
+/* Disabled button styling */
+.element-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+}
+
 
 /* Terrain-Specific Tile Styling */
 .tile-empty {

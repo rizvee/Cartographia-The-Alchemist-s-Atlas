@@ -12,12 +12,29 @@
     <div id="controls-container">
         <h2>Controls</h2>
         <p>Selected Element: <span id="selected-element-display">None</span></p>
-        <button class="element-button" data-element="Earth">Earth</button>
-        <button class="element-button" data-element="Water">Water</button>
-        <button class="element-button" data-element="Fire">Fire</button>
-        <button class="element-button" data-element="Life">Life</button>
-        <button class="element-button" data-element="Decay">Decay</button>
-        <!-- Add more buttons as needed -->
+        <div id="element-buttons">
+            <button class="element-button" data-element="Earth">Earth</button>
+            <button class="element-button" data-element="Water">Water</button>
+            <button class="element-button" data-element="Fire">Fire</button>
+            <button class="element-button" data-element="Life">Life</button>
+            <button class="element-button" data-element="Decay">Decay</button>
+            <!-- Add more buttons as needed -->
+        </div>
+        <div>
+            <button id="undo-button">Undo</button>
+            <button id="redo-button">Redo</button>
+        </div>
+        <div>
+            <button id="save-button">Save Game</button>
+            <button id="load-button">Load Game</button>
+        </div>
+        <div id="player-hand-container">
+            <h3>Your Seeds:</h3>
+            <div id="player-hand-contents">
+                <!-- Hand contents will be rendered here -->
+                Loading hand...
+            </div>
+        </div>
     </div>
 
     <hr>

@@ -1,0 +1,1349 @@
+{
+    "map": {
+        "width": 10,
+        "height": 10,
+        "grid": [
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 25,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 12,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 12,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ],
+            [
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                },
+                {
+                    "terrain_type": "Empty",
+                    "elemental_saturation": {
+                        "Earth": 0,
+                        "Water": 0,
+                        "Fire": 0,
+                        "Air": 0,
+                        "Life": 0,
+                        "Decay": 0,
+                        "Aether": 0
+                    },
+                    "elevation": 0
+                }
+            ]
+        ]
+    },
+    "hand": {
+        "seeds": [
+            {
+                "name": "Earth",
+                "description": "A seed of terrestrial power."
+            },
+            {
+                "name": "Water",
+                "description": "A seed of aquatic essence."
+            },
+            {
+                "name": "Water",
+                "description": "A seed of aquatic essence."
+            },
+            {
+                "name": "Fire",
+                "description": "A seed of conflagration."
+            }
+        ],
+        "max_hand_size": 10
+    }
+}
