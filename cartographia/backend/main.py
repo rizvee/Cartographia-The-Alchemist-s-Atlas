@@ -1,5 +1,61 @@
-from .game_logic import game_map, get_map_details, player_hand, get_player_hand_details, apply_element_to_tile
-from .models import ElementalSeed, Tile # Import Tile to test its direct instantiation
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from .game_logic import game_map, get_map_details, player_hand, get_player_hand_details, apply_element_to_tile # game_map and player_hand are initialized in game_logic
+from .models import ElementalSeed, Tile # Tile might be needed for request/response models later
+
+# --- Pydantic Models for Request/Response ---
+
+class ApplyElementRequest(BaseModel):
+    x: int
+    y: int
+    element_name: str
+
+# Create FastAPI app
+app = FastAPI()
+
+# Game state (game_map, player_hand) is initialized when game_logic is imported.
+# More sophisticated startup via @app.on_event("startup") could be added later.
+
+# --- API Endpoints ---
+
+@app.get("/api/map_details")
+async def api_get_map_details():
+    """
+    Returns the current state of the game map including tile terrain types.
+    """
+    return get_map_details()
+
+@app.post("/api/apply_element")
+async def api_apply_element(request: ApplyElementRequest):
+    """
+    Applies an element to a specific tile and returns the updated map details.
+    """
+    print(f"Received request to apply '{request.element_name}' to ({request.x},{request.y})") # Server-side log
+
+    # Validate element name if necessary (could also be done in ElementalSeed or game_logic)
+    # For now, assume apply_element_to_tile handles unknown elements gracefully.
+
+    # Call the game logic function
+    # The `apply_element_to_tile` function in game_logic already has a default strength.
+    # We can expose 'strength' in ApplyElementRequest later if needed.
+    transformation_occurred = apply_element_to_tile(
+        current_game_map=game_map,
+        x=request.x,
+        y=request.y,
+        element_name=request.element_name
+    )
+
+    # Log if transformation happened (optional)
+    # print(f"Transformation occurred on primary tile: {transformation_occurred}")
+
+    # Return the updated map details
+    # This ensures the frontend gets the full current state after any changes (including echoes)
+    return get_map_details()
+
+
+# The existing main() function and its test code are below.
+# They can be kept for command-line testing or eventually removed/refactored.
+# For FastAPI, they are not directly used unless called.
 
 # Helper function to print a portion of the map for brevity
 def print_map_section(current_game_map, start_x=0, start_y=0, width=3, height=3): # Reduced default size
@@ -341,5 +397,13 @@ def main():
     # for r_idx, row in enumerate(final_map_details['tiles']):
     #     print(f"  Row {r_idx}: {row}")
 
-if __name__ == "__main__":
-    main()
+# To run the FastAPI server (ensure you are in the 'cartographia' directory, the parent of 'backend'):
+# uvicorn cartographia.backend.main:app --reload --port 8000
+#
+# Or, if you are directly in the 'cartographia/backend' directory:
+# uvicorn main:app --reload --port 8000
+
+# if __name__ == "__main__":
+#     # main() # Commented out to prevent running test suite when starting server
+#     print("To run the test suite, uncomment main() and run: python -m cartographia.backend.main")
+#     print("To run the FastAPI server: uvicorn cartographia.backend.main:app --reload --port 8000")
