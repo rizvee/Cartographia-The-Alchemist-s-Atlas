@@ -7,74 +7,80 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="event-message" class="event-message"></div> <!-- New event message display -->
     <h1>Cartographia: The Alchemist's Atlas</h1>
 
     <div id="controls-container">
-        <h2>Controls</h2>
-        <p>Selected Element: <span id="selected-element-display">None</span></p>
-        <div id="element-buttons">
-            <button class="element-button" data-element="Earth">Earth</button>
-            <button class="element-button" data-element="Water">Water</button>
-            <button class="element-button" data-element="Fire">Fire</button>
-            <button class="element-button" data-element="Life">Life</button>
-            <button class="element-button" data-element="Decay">Decay</button>
-            <!-- Add more buttons as needed -->
-        </div>
-        <div>
-            <button id="undo-button">Undo</button>
-            <button id="redo-button">Redo</button>
-        </div>
-        <div>
-            <button id="save-button">Save Game</button>
-            <button id="load-button">Load Game</button>
+        <div id="element-selection">
+            <h2>Elements</h2>
+            <div id="element-buttons">
+                <!-- Buttons for elements will be populated here by JS -->
+            </div>
+            <p>Selected: <span id="selected-element-display">None</span></p>
         </div>
 
         <div id="alchemy-table-container">
             <h2>Alchemy Table</h2>
-            <div id="fusion-slots">
-                <span id="fusion-slot-1" class="fusion-slot" data-slot="1">Slot 1</span>
-                <span>+</span>
-                <span id="fusion-slot-2" class="fusion-slot" data-slot="2">Slot 2</span>
+            <div>
+                Slot 1: <span id="fusion-slot-1" class="fusion-slot">Empty</span>
+            </div>
+            <div>
+                Slot 2: <span id="fusion-slot-2" class="fusion-slot">Empty</span>
             </div>
             <button id="fuse-button">Fuse</button>
             <button id="clear-fusion-slots-button">Clear Slots</button>
-            <p id="fusion-result-message" class="status-message"></p>
-            <div id="discovered-fusions-container">
-                <h4>Discovered Concepts:</h4>
-                <div id="discovered-fusions-display">None yet.</div>
-            </div>
+            <p id="fusion-result-message"></p>
+            <h3>Discovered Fusions:</h3>
+            <ul id="discovered-fusions-display">
+                <!-- Discovered fusions will be listed here -->
+            </ul>
         </div>
 
         <div id="player-hand-container">
-            <h3>Your Seeds:</h3>
+            <h2>Player Hand</h2>
             <div id="player-hand-contents">
-                <!-- Hand contents will be rendered here -->
-                Loading hand...
+                <!-- Player hand contents (seed names and counts) -->
             </div>
         </div>
-        <div id="objective-container">
-            <h3>Current Objective:</h3>
-            <div id="objective-status-message" class="status-message"></div>
-            <p id="objective-description">Loading objective...</p>
-            <!-- Optional: <p id="objective-requirements"></p> -->
-        </div>
 
-        <div id="lore-compendium-container">
-            <h3>Alchemist's Atlas (Discoveries)</h3>
-            <ul id="lore-entries-list">
-                <li>Loading discoveries...</li>
+        <div id="objective-container">
+            <h2>Current Objective</h2>
+            <p id="objective-status-message" class="objective-message"></p>
+            <p id="objective-description">Loading objective...</p>
+            <ul id="objective-requirements-list">
+                <!-- Individual requirements will be listed here -->
             </ul>
         </div>
-    </div>
 
-    <hr>
+        <div id="actions-container">
+            <h2>Actions</h2>
+            <button id="undo-button">Undo</button>
+            <button id="redo-button">Redo</button>
+            <button id="save-button">Save Game</button>
+            <button id="load-button">Load Game</button>
+            <button id="reset-button">Reset Game</button>
+        </div>
+    </div>
 
     <div id="map-container">
-        <!-- Map will be rendered here by JavaScript -->
+        <!-- Game map will be rendered here by JS -->
     </div>
 
-    <div id="tile-info-panel" class="info-panel">
-        Hover over a tile to see details.
+    <div id="tile-info-panel">
+        <h3>Tile Info</h3>
+        <p><strong>Terrain:</strong> <span id="info-terrain">N/A</span></p>
+        <p><strong>Elevation:</strong> <span id="info-elevation">N/A</span></p>
+        <p><strong>Feature:</strong> <span id="info-feature">N/A</span></p>
+        <div id="info-saturation">
+            <!-- Elemental saturation details here -->
+        </div>
+    </div>
+
+    <div id="lore-compendium-container">
+        <h2>Lore Compendium</h2>
+        <ul id="lore-entries-list">
+            <!-- Lore entries will be populated here -->
+        </ul>
     </div>
 
     <script src="js/script.js"></script>

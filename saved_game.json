@@ -8,13 +8,12 @@
                     "terrain_type": "Empty",
                     "elemental_saturation": {
                         "Earth": 0,
-                        "Water": 0,
+                        "Water": 25,
                         "Fire": 0,
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0,
-                        "Steam": 30
+                        "Aether": 0
                     },
                     "elevation": 0
                 },
@@ -22,13 +21,12 @@
                     "terrain_type": "Empty",
                     "elemental_saturation": {
                         "Earth": 0,
-                        "Water": 0,
+                        "Water": 10,
                         "Fire": 0,
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0,
-                        "Steam": 21
+                        "Aether": 0
                     },
                     "elevation": 0
                 },
@@ -142,13 +140,12 @@
                     "terrain_type": "Empty",
                     "elemental_saturation": {
                         "Earth": 0,
-                        "Water": 0,
+                        "Water": 10,
                         "Fire": 0,
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0,
-                        "Steam": 21
+                        "Aether": 0
                     },
                     "elevation": 0
                 },
@@ -1331,23 +1328,31 @@
     "hand": {
         "seeds": [
             {
-                "name": "Earth",
-                "description": "A seed of terrestrial power."
+                "name": "Steam",
+                "description": "Hot, swirling vapor."
+            },
+            {
+                "name": "Stone",
+                "description": "Solid, enduring matter."
             },
             {
                 "name": "Earth",
-                "description": "A seed of terrestrial power."
-            },
-            {
-                "name": "Water",
-                "description": "A seed of aquatic essence."
+                "description": "A mysteriously found seed."
             }
         ],
         "max_hand_size": 10
     },
     "discovered_fusions": [
-        "Steam"
+        "Steam",
+        "Stone"
     ],
-    "current_objective_id": "obj_mt_rv",
-    "current_objective_completed_status": false
+    "current_objective_id": "obj_ruins_by_river",
+    "current_objective_completed_status": false,
+    "discovered_lore_entries": [
+        "New Objective: Discover ancient Ruins near a River.",
+        "New Fusion: Alchemized Steam from Fire and Water.",
+        "New Fusion: Alchemized Stone from Earth and Earth."
+    ],
+    "discovered_biome_types": [],
+    "discovered_feature_types": []
 }

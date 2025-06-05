@@ -198,17 +198,18 @@ class PlayerHand:
 
 class Objective:
     """Represents a player objective in the game."""
-    def __init__(self, id: str, description: str, requirements: dict, completed: bool = False):
+    def __init__(self, id: str, description: str, requirements: list, completed: bool = False): # Changed requirements to list
         if not id or not isinstance(id, str):
             raise ValueError("Objective ID must be a non-empty string.")
         if not description or not isinstance(description, str):
             raise ValueError("Objective description must be a non-empty string.")
-        if not isinstance(requirements, dict):
-            raise ValueError("Objective requirements must be a dictionary.")
+        if not isinstance(requirements, list) or \
+           not all(isinstance(req, dict) for req in requirements): # Check if it's a list of dicts
+            raise ValueError("Objective requirements must be a list of dictionaries.")
 
         self.id = id
         self.description = description
-        self.requirements = requirements # e.g., {"Mountain": 2, "River": 1}
+        self.requirements = requirements
         self.completed = completed
 
     def __repr__(self):
@@ -223,32 +224,79 @@ class Objective:
             'completed': self.completed
         }
 
-    def check_completion(self, game_map_instance) -> bool:
+    def check_completion(self, game_map_instance, discovered_fusions_set: set) -> bool:
         """
-        Checks if the objective's requirements are met based on the current game map.
+        Checks if all objective requirements are met based on the current game state.
         If met, sets self.completed to True and returns True. Otherwise, returns False.
         """
-        if self.completed: # Already completed
+        if self.completed:
             return True
 
-        terrain_counts = {}
-        for row in game_map_instance.grid:
-            for tile in row:
-                terrain_counts[tile.terrain_type] = terrain_counts.get(tile.terrain_type, 0) + 1
+        for req in self.requirements:
+            req_type = req.get("type")
+            requirement_met = False
 
-        all_requirements_met = True
-        for terrain, required_count in self.requirements.items():
-            if terrain_counts.get(terrain, 0) < required_count:
-                all_requirements_met = False
-                break
+            if req_type == "terrain_count":
+                terrain_counts = {}
+                for row in game_map_instance.grid:
+                    for tile in row:
+                        terrain_counts[tile.terrain_type] = terrain_counts.get(tile.terrain_type, 0) + 1
 
-        if all_requirements_met:
-            self.completed = True
-            print(f"Objective '{self.id}' requirements met and marked as completed.")
-            return True
+                if terrain_counts.get(req["terrain"], 0) >= req["min_count"]:
+                    requirement_met = True
 
-        return False
+            elif req_type == "feature_adjacent_to_terrain":
+                count = 0
+                for y, row in enumerate(game_map_instance.grid):
+                    for x, tile in enumerate(row):
+                        if tile.feature == req["feature"]:
+                            neighbors = game_map_instance.get_neighbors(x, y)
+                            for neighbor in neighbors:
+                                if neighbor.terrain_type == req["terrain"]:
+                                    count += 1
+                                    break # Found one adjacent target terrain, count this feature tile
+                            if count >= req["min_count"]: # Check if objective count for this feature type is met
+                                break # Stop checking other feature tiles if min_count reached for this requirement
+                    if count >= req["min_count"]: # Propagate break
+                        break
+                if count >= req["min_count"]:
+                    requirement_met = True
 
-    # No from_dict needed if we always create from predefined templates and then copy for current_objective.
-    # If objectives were to be saved/loaded independently (e.g. player progress on objectives),
-    # then a from_dict method would be useful here.
+            elif req_type == "discover_fusions":
+                if len(discovered_fusions_set) >= req["min_count"]:
+                    requirement_met = True
+
+            elif req_type == "specific_tile_condition":
+                tile = game_map_instance.get_tile(req["x"], req["y"])
+                if tile:
+                    terrain_match = tile.terrain_type == req["expected_terrain"]
+                    feature_match = True # Assume true if feature not specified in req
+                    if "has_feature" in req:
+                        feature_match = tile.feature == req["has_feature"]
+                    if terrain_match and feature_match:
+                        requirement_met = True
+
+            # Add more requirement type handlers here
+            # elif req_type == "another_type":
+            #     ...
+
+            if not requirement_met:
+                # print(f"Debug: Requirement not met: {req}")
+                return False  # All requirements must be met
+
+        # If loop completes, all requirements were met
+        self.completed = True
+        print(f"Objective '{self.id}' requirements met and marked as completed.")
+        return True
+
+    # from_dict is not strictly needed if objectives are always reconstructed from PREDEFINED_OBJECTIVES
+    # and only 'id' and 'completed' status are saved/loaded.
+    # However, if we were to save/load entire objective dicts:
+    # @staticmethod
+    # def from_dict(data):
+    #     return Objective(
+    #         id=data['id'],
+    #         description=data['description'],
+    #         requirements=data['requirements'], # Assuming requirements are already in correct list-of-dicts format
+    #         completed=data.get('completed', False)
+    #     )
