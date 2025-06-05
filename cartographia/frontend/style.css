@@ -216,6 +216,46 @@ h1 {
     padding-left: 10px;
 }
 
+/* Tile Info Panel */
+#tile-info-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px; /* Adjust as needed */
+    min-height: 100px; /* Adjust as needed */
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    z-index: 1000; /* Ensure it's above other elements */
+    font-size: 0.9em;
+    color: #333;
+    opacity: 0; /* Initially hidden, made visible by JS on hover */
+    pointer-events: none; /* Prevent it from interfering with mouse events on map */
+    transition: opacity 0.2s ease-in-out;
+}
+
+#tile-info-panel.visible {
+    opacity: 1;
+    pointer-events: auto; /* Allow interaction if needed, though mostly display */
+}
+
+#tile-info-panel h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+#tile-info-panel p {
+    margin: 5px 0;
+}
+#tile-info-panel strong {
+    color: #555;
+}
+
 
 /* Terrain-Specific Tile Styling */
 .tile-empty {

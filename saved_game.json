@@ -13,7 +13,8 @@
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0
+                        "Aether": 0,
+                        "Steam": 30
                     },
                     "elevation": 0
                 },
@@ -26,7 +27,8 @@
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0
+                        "Aether": 0,
+                        "Steam": 21
                     },
                     "elevation": 0
                 },
@@ -145,7 +147,8 @@
                         "Air": 0,
                         "Life": 0,
                         "Decay": 0,
-                        "Aether": 0
+                        "Aether": 0,
+                        "Steam": 21
                     },
                     "elevation": 0
                 },
@@ -1328,6 +1331,14 @@
     "hand": {
         "seeds": [
             {
+                "name": "Earth",
+                "description": "A seed of terrestrial power."
+            },
+            {
+                "name": "Earth",
+                "description": "A seed of terrestrial power."
+            },
+            {
                 "name": "Water",
                 "description": "A seed of aquatic essence."
             }
@@ -1335,7 +1346,8 @@
         "max_hand_size": 10
     },
     "discovered_fusions": [
-        "Stone",
         "Steam"
-    ]
+    ],
+    "current_objective_id": "obj_fr_ds",
+    "current_objective_completed_status": false
 }
