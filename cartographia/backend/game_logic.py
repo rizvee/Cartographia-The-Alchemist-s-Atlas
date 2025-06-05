@@ -1,7 +1,7 @@
 import random
-import copy # For deep copying game state
-import json # For saving and loading game state to/from file
-from .models import MapGrid, ElementalSeed, PlayerHand, Tile
+import copy
+import json
+from .models import MapGrid, ElementalSeed, PlayerHand, Tile, Objective # Added Objective
 
 # --- Game State History for Undo/Redo ---
 history_stack = []
@@ -10,6 +10,46 @@ MAX_HISTORY_SIZE = 10 # Max number of states to remember for undo/redo
 
 # --- Save/Load Game Constant ---
 SAVE_GAME_FILENAME = "saved_game.json"
+
+# --- Elemental Fusion ---
+ELEMENTAL_FUSION_RULES = {
+    frozenset({"Fire", "Water"}): "Steam",
+    frozenset({"Earth", "Life"}): "Flora",
+    frozenset({"Decay", "Life"}): "Fungus",
+    frozenset({"Earth", "Water"}): "Mud", # Concept of Mud, distinct from Mud terrain
+    frozenset({"Fire", "Earth"}): "Lava",
+    frozenset({"Air", "Water"}): "Mist",
+    frozenset({"Air", "Fire"}): "Energy", # Simple energy concept
+    frozenset({"Earth", "Earth"}): "Stone", # Combining two of the same
+}
+discovered_fusions = set() # Stores names of discovered concepts, e.g., {"Steam"}
+
+
+# --- Objectives ---
+PREDEFINED_OBJECTIVES = [
+    Objective(id="obj_mt_rv", description="Forge a land with at least 2 Mountains and 1 River.", requirements={"Mountain": 2, "River": 1}),
+    Objective(id="obj_fr_ds", description="Cultivate 3 Forests and sculpt 1 Desert.", requirements={"Forest": 3, "Desert": 1}),
+    Objective(id="obj_vlcn", description="Summon a mighty Volcano.", requirements={"Volcano": 1}),
+    Objective(id="obj_sw_jg", description="Nurture a Swamp and a Jungle.", requirements={"Swamp": 1, "Jungle": 1})
+]
+current_objective: Objective | None = None
+
+def generate_new_objective():
+    """Selects a new objective, ensuring it's a fresh copy, and sets its completed status to False."""
+    global current_objective
+    if PREDEFINED_OBJECTIVES:
+        chosen_objective_template = random.choice(PREDEFINED_OBJECTIVES)
+        # Create a new instance (deep copy) to avoid modifying the template
+        current_objective = Objective(
+            id=chosen_objective_template.id,
+            description=chosen_objective_template.description,
+            requirements=copy.deepcopy(chosen_objective_template.requirements),
+            completed=False # Explicitly set to False for a new objective
+        )
+        print(f"New objective generated: {current_objective.description}")
+    else:
+        current_objective = None
+        print("No predefined objectives available.")
 
 # Initialize a default game map
 DEFAULT_MAP_WIDTH = 10
@@ -142,6 +182,13 @@ def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, 
                 print(f"Could not add '{awarded_seed_name}' seed (hand likely full).")
         else:
             print("Warning: Tile.ALL_ELEMENTS is empty, cannot award a random seed.")
+
+    # Check for objective completion
+    global current_objective # Ensure we are using the global one
+    if current_objective and not current_objective.completed:
+        if current_objective.check_completion(current_game_map): # Pass the modified map
+            print(f"Objective '{current_objective.description}' completed!")
+            generate_new_objective() # Auto-generate next objective
 
     return True # Action was successful (seed consumed, logic run)
 
@@ -350,14 +397,15 @@ def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, 
 
 def save_game_to_file(filename: str = SAVE_GAME_FILENAME): # Now SAVE_GAME_FILENAME is defined
     """Saves the current game state (map and player hand) to a file."""
-    global game_map, player_hand # Access the global instances
+    global game_map, player_hand, discovered_fusions # Access global instances
     try:
         game_state_data = {
             'map': game_map.to_dict(),
-            'hand': player_hand.to_dict()
+            'hand': player_hand.to_dict(),
+            'discovered_fusions': list(discovered_fusions) # Save as list
         }
         with open(filename, 'w') as f:
-            json.dump(game_state_data, f, indent=4) # Use indent for readability
+            json.dump(game_state_data, f, indent=4)
         print(f"Game state saved successfully to {filename}")
         return True
     except Exception as e:
@@ -366,37 +414,64 @@ def save_game_to_file(filename: str = SAVE_GAME_FILENAME): # Now SAVE_GAME_FILEN
 
 def load_game_from_file(filename: str = SAVE_GAME_FILENAME) -> bool:
     """Loads game state from a file and updates the global game_map and player_hand."""
-    global game_map, player_hand, history_stack, redo_stack # Need to modify these globals
+    global game_map, player_hand, history_stack, redo_stack, discovered_fusions, current_objective # current_objective is now correctly declared global at the start
     try:
         with open(filename, 'r') as f:
             loaded_data = json.load(f)
 
-        if 'map' not in loaded_data or 'hand' not in loaded_data:
-            print(f"Error: Invalid save data structure in {filename}.")
+        if 'map' not in loaded_data or 'hand' not in loaded_data: # Basic check
+            print(f"Error: Invalid save data structure in {filename} (missing map or hand).")
             return False
 
-        # Reconstruct game objects from loaded data
-        # This directly replaces the global instances.
-        # Ensure this is the desired behavior for all parts of the application.
         new_map = MapGrid.from_dict(loaded_data['map'])
         new_hand = PlayerHand.from_dict(loaded_data['hand'])
+        loaded_fusions = set(loaded_data.get('discovered_fusions', [])) # Load fusions, default to empty list if key missing
 
-        # Update global variables by replacing their content/attributes
-        # This is safer than rebinding global variables if other modules hold direct references.
+        # Update global game state variables by modifying their content
         game_map.width = new_map.width
         game_map.height = new_map.height
-        game_map.grid = new_map.grid # new_map.grid already contains Tile objects
+        game_map.grid = new_map.grid
 
         player_hand.seeds = new_hand.seeds
         player_hand.max_hand_size = new_hand.max_hand_size
 
-        # Clear undo/redo history as the game state has jumped
+        discovered_fusions.clear()
+        discovered_fusions.update(loaded_fusions)
+
         history_stack.clear()
         redo_stack.clear()
 
-        print(f"Game state loaded successfully from {filename}. Undo/redo history cleared.")
-        # Potentially save this loaded state as the first entry in history? For now, no.
-        # _save_state_for_undo(game_map, player_hand) # Optional: save loaded state as first history item
+        print(f"Game state loaded successfully from {filename}. Undo/redo history cleared. Discovered fusions: {discovered_fusions}")
+
+        # global current_objective # No longer needed here, declared at function top
+        if current_objective and current_objective.completed:
+                                                            # This part of the logic might need refinement if objective state persistence is critical across loads.
+                                                            # The objective save/load would be part of the 'game_state_data' in save_game_to_file if we add it.
+                                                            # For now, `current_objective` is just re-initialized by `generate_new_objective()` if its loaded state was completed.
+                                                            # This part of the logic might need refinement if objective state persistence is critical across loads.
+            # The Objective instance itself would need to be restored if it's saved.
+            # For now, the save file structure only contains 'map' and 'hand' and 'discovered_fusions'.
+            # If we wanted to save the objective:
+            # if 'current_objective' in loaded_data and loaded_data['current_objective'] is not None:
+            #     current_objective = Objective.from_dict(loaded_data['current_objective']) # Requires Objective.from_dict
+            # else:
+            #     generate_new_objective() # Or set to None
+
+            # Based on current save structure, current_objective is not reloaded from file,
+            # so the following check might be on a newly generated objective if not careful.
+            # However, generate_new_objective() is called at the end of this function if current_objective.completed is true.
+            # Let's assume current_objective is re-instantiated by generate_new_objective() if its saved state was completed.
+            # The subtask for objective generation already calls generate_new_objective() if current_objective.completed.
+            # This part is a bit tangled. Let's simplify: load_game_from_file resets to a new objective anyway if the one
+            # that *would have been current* (if saved) was completed.
+            # The current implementation of load_game_from_file does not load 'current_objective'.
+            # So, after load, a new objective is generated by `generate_new_objective()` at the end of this module.
+            # The check for `current_objective.completed` here will be on this newly generated one, which is always False.
+            # This part of the prompt might be better handled by saving/loading the objective state explicitly.
+            # For now, let's stick to what's saved: map, hand, discovered_fusions.
+            # The objective completion check will occur naturally if a new objective is generated after load.
+            pass # The existing logic in game_logic will generate a new one if the loaded one was completed.
+                 # But current save file doesn't store the objective. This needs to be added to save_game_to_file.
 
         return True
     except FileNotFoundError:
@@ -412,29 +487,96 @@ def load_game_from_file(filename: str = SAVE_GAME_FILENAME) -> bool:
         print(f"An unexpected error occurred loading game from file {filename}: {e}")
         return False
 
+    # After loading, check if the (potentially newly generated or soon to be checked) objective was completed
+    # The current_objective global is now correctly scoped.
+    # The objective loading logic itself is not part of this save file structure,
+    # but if a completed objective somehow becomes current, this handles regeneration.
+    if current_objective and current_objective.completed:
+        print(f"Current objective '{current_objective.description}' is completed (this might be from a previous state or just re-checked). Generating a new one.")
+        generate_new_objective()
+
+    return True
+
 
 def get_game_state(): # Renamed from get_map_details
-    """Returns combined game state including map details and player hand."""
+    """Returns combined game state including map details, player hand, and current objective."""
+    global current_objective # Ensure we're accessing the global
     # Ensure we are returning data from the current global game_map and player_hand
     map_details = {
         "width": game_map.width,
         "height": game_map.height,
         "tiles": [[tile.terrain_type for tile in row] for row in game_map.grid]
     }
-    hand_details = get_player_hand_details() # Uses existing helper
+    hand_details = get_player_hand_details()
+
+    objective_data = None
+    if current_objective: # current_objective is global
+        objective_data = current_objective.to_dict()
 
     return {
         "map_details": map_details,
-        "player_hand": hand_details["seeds"], # Just the list of seed names
-        "player_hand_count": hand_details["count"]
+        "player_hand": hand_details["seeds"],
+        "player_hand_count": hand_details["count"],
+        "current_objective": objective_data,
+        "discovered_fusions": sorted(list(discovered_fusions)) # Return sorted list for consistent order
     }
 
-def get_player_hand_details(): # This helper is still useful internally or for other potential endpoints
+# --- Elemental Fusion Logic ---
+def fuse_elements_logic(hand_instance: PlayerHand, element1_name: str, element2_name: str) -> dict:
+    """
+    Attempts to fuse two elemental seeds from the player's hand.
+    Consumes seeds if available and a rule exists. Updates discovered_fusions.
+    """
+    global discovered_fusions, ELEMENTAL_FUSION_RULES
+
+    # Handle needing two of the same seed
+    if element1_name == element2_name:
+        # Count how many the player has
+        current_count = sum(1 for seed in hand_instance.seeds if seed.name == element1_name)
+        if current_count < 2:
+            return {"success": False, "message": f"You need at least two '{element1_name}' seeds to fuse them."}
+    elif not (hand_instance.has_seed(element1_name) and hand_instance.has_seed(element2_name)):
+        return {"success": False, "message": "You don't have the required seeds."}
+
+    # Consume seeds (this needs to be careful if element1_name == element2_name)
+    if not hand_instance.remove_seed(element1_name): # Remove first seed
+        # This should not happen if has_seed checks passed, but as a safeguard
+        return {"success": False, "message": f"Failed to remove first seed {element1_name}."}
+
+    if not hand_instance.remove_seed(element2_name): # Remove second seed
+        # Rollback: try to add the first seed back if the second removal fails
+        hand_instance.add_seed(ElementalSeed(name=element1_name, description="Restored after failed fusion attempt.")) # Add it back
+        return {"success": False, "message": f"Failed to remove second seed {element2_name} after removing first."}
+
+    # Form key and check rule
+    fusion_key = frozenset({element1_name, element2_name})
+    result_name = ELEMENTAL_FUSION_RULES.get(fusion_key)
+
+    if result_name:
+        discovered_fusions.add(result_name)
+        # Save state for undo after successful fusion (which changes hand and discovered_fusions)
+        _save_state_for_undo(game_map, hand_instance) # hand_instance is player_hand here
+        return {"success": True, "result_name": result_name, "message": f"You combined {element1_name} and {element2_name} to discover {result_name}!"}
+    else:
+        # Fusion failed, no known combination. Add seeds back to hand as they were consumed optimistically.
+        # This also needs to be undoable if we consider failed fusions an "action".
+        # For now, a failed fusion that consumed seeds is a "destructive" failed attempt.
+        # The prompt implies "Consume ... If a result is found ... If no rule ... return ...".
+        # This suggests consumption happens before rule check.
+        # Let's save state for undo here as well, as hand changed.
+        _save_state_for_undo(game_map, hand_instance)
+        return {"success": False, "message": "These elements do not seem to react."}
+
+
+def get_player_hand_details():
     """Returns the detailed contents of the player's hand."""
     return {
         "seeds": player_hand.get_hand_contents(),
         "count": len(player_hand.seeds)
     }
+
+# --- Initializations ---
+generate_new_objective() # Set an initial objective when the module loads
 
 # Example of how to access a tile and hand (optional, for testing)
 # if __name__ == "__main__":

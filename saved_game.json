@@ -7,7 +7,7 @@
                 {
                     "terrain_type": "Empty",
                     "elemental_saturation": {
-                        "Earth": 25,
+                        "Earth": 0,
                         "Water": 0,
                         "Fire": 0,
                         "Air": 0,
@@ -20,7 +20,7 @@
                 {
                     "terrain_type": "Empty",
                     "elemental_saturation": {
-                        "Earth": 12,
+                        "Earth": 0,
                         "Water": 0,
                         "Fire": 0,
                         "Air": 0,
@@ -139,7 +139,7 @@
                 {
                     "terrain_type": "Empty",
                     "elemental_saturation": {
-                        "Earth": 12,
+                        "Earth": 0,
                         "Water": 0,
                         "Fire": 0,
                         "Air": 0,
@@ -1328,22 +1328,14 @@
     "hand": {
         "seeds": [
             {
-                "name": "Earth",
-                "description": "A seed of terrestrial power."
-            },
-            {
                 "name": "Water",
                 "description": "A seed of aquatic essence."
-            },
-            {
-                "name": "Water",
-                "description": "A seed of aquatic essence."
-            },
-            {
-                "name": "Fire",
-                "description": "A seed of conflagration."
             }
         ],
         "max_hand_size": 10
-    }
+    },
+    "discovered_fusions": [
+        "Stone",
+        "Steam"
+    ]
 }

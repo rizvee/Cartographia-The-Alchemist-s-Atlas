@@ -111,6 +111,111 @@ h1 {
     background-color: #f0f0f0;
 }
 
+/* Objective Display */
+#objective-container {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #fffacd; /* Light yellow, like parchment */
+    border: 1px dashed #aaa;
+    border-radius: 4px;
+}
+
+#objective-container h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: #555;
+}
+
+#objective-description {
+    font-style: italic;
+    color: #333;
+    margin-top: 5px; /* Add some space if status message is shown */
+}
+
+.status-message {
+    color: green;
+    font-weight: bold;
+    padding: 5px 0;
+    min-height: 1.2em; /* Reserve space to prevent layout shift */
+    transition: opacity 0.5s ease-out;
+}
+
+/* Alchemy Table Styling */
+#alchemy-table-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#alchemy-table-container h2 {
+    margin-top: 0;
+}
+
+#fusion-slots {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.fusion-slot {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px; /* Vertically center text */
+    border: 1px dashed #aaa;
+    margin: 0 5px;
+    padding: 0 5px;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer; /* To indicate they are clickable for adding elements */
+    color: #777; /* Default text color for empty slot */
+}
+
+.fusion-slot.filled {
+    color: #000; /* Text color when an element is in slot */
+    font-weight: bold;
+}
+
+
+#fusion-slots span:not(.fusion-slot) { /* For the "+" sign */
+    margin: 0 5px;
+}
+
+#fuse-button, #clear-fusion-slots-button {
+    padding: 8px 15px;
+    margin: 10px 5px 5px 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+#fuse-button:hover, #clear-fusion-slots-button:hover {
+    background-color: #c8c8c8;
+}
+
+#fusion-result-message {
+    min-height: 1.2em; /* Reserve space */
+    margin-top: 10px;
+    font-style: italic;
+}
+
+#discovered-fusions-container {
+    margin-top: 15px;
+    text-align: left; /* Align list to the left within centered container */
+}
+#discovered-fusions-container h4 {
+    margin-bottom: 5px;
+}
+#discovered-fusions-display {
+    font-size: 0.9em;
+    color: #333;
+    padding-left: 10px;
+}
+
 
 /* Terrain-Specific Tile Styling */
 .tile-empty {

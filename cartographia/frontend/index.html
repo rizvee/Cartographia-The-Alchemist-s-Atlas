@@ -28,12 +28,35 @@
             <button id="save-button">Save Game</button>
             <button id="load-button">Load Game</button>
         </div>
+
+        <div id="alchemy-table-container">
+            <h2>Alchemy Table</h2>
+            <div id="fusion-slots">
+                <span id="fusion-slot-1" class="fusion-slot" data-slot="1">Slot 1</span>
+                <span>+</span>
+                <span id="fusion-slot-2" class="fusion-slot" data-slot="2">Slot 2</span>
+            </div>
+            <button id="fuse-button">Fuse</button>
+            <button id="clear-fusion-slots-button">Clear Slots</button>
+            <p id="fusion-result-message" class="status-message"></p>
+            <div id="discovered-fusions-container">
+                <h4>Discovered Concepts:</h4>
+                <div id="discovered-fusions-display">None yet.</div>
+            </div>
+        </div>
+
         <div id="player-hand-container">
             <h3>Your Seeds:</h3>
             <div id="player-hand-contents">
                 <!-- Hand contents will be rendered here -->
                 Loading hand...
             </div>
+        </div>
+        <div id="objective-container">
+            <h3>Current Objective:</h3>
+            <div id="objective-status-message" class="status-message"></div>
+            <p id="objective-description">Loading objective...</p>
+            <!-- Optional: <p id="objective-requirements"></p> -->
         </div>
     </div>
 

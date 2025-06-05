@@ -191,3 +191,60 @@ class PlayerHand:
             raise ValueError(f"Invalid data for PlayerHand deserialization: {data}")
         loaded_seeds = [ElementalSeed.from_dict(sd) for sd in data['seeds']]
         return PlayerHand(initial_seeds=loaded_seeds, max_hand_size=data['max_hand_size'])
+
+class Objective:
+    """Represents a player objective in the game."""
+    def __init__(self, id: str, description: str, requirements: dict, completed: bool = False):
+        if not id or not isinstance(id, str):
+            raise ValueError("Objective ID must be a non-empty string.")
+        if not description or not isinstance(description, str):
+            raise ValueError("Objective description must be a non-empty string.")
+        if not isinstance(requirements, dict):
+            raise ValueError("Objective requirements must be a dictionary.")
+
+        self.id = id
+        self.description = description
+        self.requirements = requirements # e.g., {"Mountain": 2, "River": 1}
+        self.completed = completed
+
+    def __repr__(self):
+        return (f"Objective(id='{self.id}', description='{self.description}', "
+                f"requirements={self.requirements}, completed={self.completed})")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'description': self.description,
+            'requirements': self.requirements.copy(), # Return a copy
+            'completed': self.completed
+        }
+
+    def check_completion(self, game_map_instance) -> bool:
+        """
+        Checks if the objective's requirements are met based on the current game map.
+        If met, sets self.completed to True and returns True. Otherwise, returns False.
+        """
+        if self.completed: # Already completed
+            return True
+
+        terrain_counts = {}
+        for row in game_map_instance.grid:
+            for tile in row:
+                terrain_counts[tile.terrain_type] = terrain_counts.get(tile.terrain_type, 0) + 1
+
+        all_requirements_met = True
+        for terrain, required_count in self.requirements.items():
+            if terrain_counts.get(terrain, 0) < required_count:
+                all_requirements_met = False
+                break
+
+        if all_requirements_met:
+            self.completed = True
+            print(f"Objective '{self.id}' requirements met and marked as completed.")
+            return True
+
+        return False
+
+    # No from_dict needed if we always create from predefined templates and then copy for current_objective.
+    # If objectives were to be saved/loaded independently (e.g. player progress on objectives),
+    # then a from_dict method would be useful here.

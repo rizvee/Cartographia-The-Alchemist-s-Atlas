@@ -10,6 +10,10 @@ class ApplyElementRequest(BaseModel):
     y: int
     element_name: str
 
+class FuseElementsRequest(BaseModel):
+    element1: str
+    element2: str
+
 # Create FastAPI app
 app = FastAPI()
 
@@ -102,6 +106,25 @@ async def api_load_map():
     else:
         # load_game_from_file prints specific errors to server console
         raise HTTPException(status_code=500, detail="Failed to load game. File might be missing or corrupted.")
+
+@app.post("/api/fuse_elements")
+async def api_fuse_elements(request: FuseElementsRequest):
+    """
+    Attempts to fuse two elements from the player's hand.
+    Returns the result of the fusion attempt.
+    """
+    from .game_logic import fuse_elements_logic, player_hand # Import necessary components
+
+    print(f"Received request to fuse '{request.element1}' and '{request.element2}'")
+
+    result = fuse_elements_logic(player_hand, request.element1, request.element2)
+
+    if result["success"]:
+        # Optionally, if fusion success should also return the full game state:
+        # return get_game_state()
+        return result # Contains result_name and message
+    else:
+        raise HTTPException(status_code=400, detail=result.get("message", "Fusion failed for unknown reasons."))
 
 
 # The existing main() function and its test code are below.

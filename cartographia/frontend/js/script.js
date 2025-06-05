@@ -1,5 +1,11 @@
 let selectedElement = null;
 const API_BASE_URL = 'http://localhost:8000';
+let displayedObjectiveId = null;
+let objectiveStatusTimeout = null;
+
+// Fusion Slot States
+let fusionSlot1Element = null;
+let fusionSlot2Element = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchGameStateAndRender(); // Renamed
@@ -32,6 +38,8 @@ function renderGameUI(gameState) {
         console.error("No game state to render.");
         return;
     }
+
+    // Render Map
     if (gameState.map_details) {
         renderMap(gameState.map_details);
     } else {
@@ -40,16 +48,61 @@ function renderGameUI(gameState) {
         if (mapContainer) mapContainer.innerHTML = '<p>Map data missing in game state.</p>';
     }
 
-    // player_hand is now a list of seed names, player_hand_count is an integer
-    // We need to derive the counts for display, or the backend could provide a count map.
-    // For now, let's derive counts from the player_hand list.
+    // Render Player Hand
     const handCounts = {};
     if (gameState.player_hand) {
         gameState.player_hand.forEach(seedName => {
             handCounts[seedName] = (handCounts[seedName] || 0) + 1;
         });
     }
-    renderPlayerHand(handCounts, gameState.player_hand_count); // Pass derived counts and total count
+    // Pass handCounts (derived map of seed names to their counts) and total count
+    renderPlayerHand(handCounts, gameState.player_hand_count);
+
+    // Render Current Objective
+    const objectiveDescriptionElement = document.getElementById('objective-description');
+    if (objectiveDescriptionElement) {
+        const objectiveStatusMessageElement = document.getElementById('objective-status-message');
+
+        if (gameState.current_objective && gameState.current_objective.description) {
+            if (displayedObjectiveId !== null && gameState.current_objective.id !== displayedObjectiveId) {
+                if (objectiveStatusMessageElement) {
+                    objectiveStatusMessageElement.textContent = "Objective Completed! New Objective:";
+                    objectiveStatusMessageElement.style.opacity = '1';
+                    if (objectiveStatusTimeout) clearTimeout(objectiveStatusTimeout);
+                    objectiveStatusTimeout = setTimeout(() => {
+                        objectiveStatusMessageElement.style.opacity = '0';
+                        setTimeout(() => {
+                           if (objectiveStatusMessageElement.style.opacity === '0') {
+                               objectiveStatusMessageElement.textContent = "";
+                           }
+                        }, 500);
+                    }, 3000);
+                }
+            } else if (displayedObjectiveId === null && objectiveStatusMessageElement) {
+                if (objectiveStatusMessageElement) objectiveStatusMessageElement.textContent = "";
+            }
+            objectiveDescriptionElement.textContent = gameState.current_objective.description;
+            displayedObjectiveId = gameState.current_objective.id;
+        } else {
+            objectiveDescriptionElement.textContent = "Explore and transform the world!";
+            if (objectiveStatusMessageElement) objectiveStatusMessageElement.textContent = "";
+            displayedObjectiveId = null;
+        }
+    } else {
+        console.error("Objective description element not found!");
+    }
+
+    // Render Discovered Fusions
+    const discoveredFusionsDisplay = document.getElementById('discovered-fusions-display');
+    if (discoveredFusionsDisplay) {
+        if (gameState.discovered_fusions && gameState.discovered_fusions.length > 0) {
+            discoveredFusionsDisplay.textContent = gameState.discovered_fusions.join(', ');
+        } else {
+            discoveredFusionsDisplay.textContent = "None yet.";
+        }
+    } else {
+        console.error("Discovered fusions display element not found!");
+    }
 }
 
 
@@ -86,7 +139,117 @@ function setupControls() {
     if (loadButton) {
         loadButton.addEventListener('click', handleLoadClick);
     }
+
+    // Fusion Slot Click Handlers
+    const fusionSlot1Display = document.getElementById('fusion-slot-1');
+    const fusionSlot2Display = document.getElementById('fusion-slot-2');
+
+    if (fusionSlot1Display) {
+        fusionSlot1Display.addEventListener('click', () => {
+            if (selectedElement) {
+                fusionSlot1Element = selectedElement;
+                fusionSlot1Display.textContent = selectedElement;
+                fusionSlot1Display.classList.add('filled');
+                // Optionally clear selectedElement or require explicit slot selection
+                // For now, selectedElement remains, can be used for other slot or map
+            } else {
+                alert("Select an element first to place it in a fusion slot.");
+            }
+        });
+    }
+
+    if (fusionSlot2Display) {
+        fusionSlot2Display.addEventListener('click', () => {
+            if (selectedElement) {
+                fusionSlot2Element = selectedElement;
+                fusionSlot2Display.textContent = selectedElement;
+                fusionSlot2Display.classList.add('filled');
+            } else {
+                alert("Select an element first to place it in a fusion slot.");
+            }
+        });
+    }
+
+    const clearFusionSlotsButton = document.getElementById('clear-fusion-slots-button');
+    if (clearFusionSlotsButton) {
+        clearFusionSlotsButton.addEventListener('click', () => {
+            fusionSlot1Element = null;
+            fusionSlot2Element = null;
+            if(fusionSlot1Display) {
+                fusionSlot1Display.textContent = "Slot 1";
+                fusionSlot1Display.classList.remove('filled');
+            }
+            if(fusionSlot2Display) {
+                fusionSlot2Display.textContent = "Slot 2";
+                fusionSlot2Display.classList.remove('filled');
+            }
+            const fusionResultMessage = document.getElementById('fusion-result-message');
+            if (fusionResultMessage) fusionResultMessage.textContent = "";
+        });
+    }
+
+    const fuseButton = document.getElementById('fuse-button');
+    if (fuseButton) {
+        fuseButton.addEventListener('click', handleFuseClick);
+    }
 }
+
+async function handleFuseClick() {
+    const fusionResultMessage = document.getElementById('fusion-result-message');
+    if (!fusionSlot1Element || !fusionSlot2Element) {
+        if(fusionResultMessage) fusionResultMessage.textContent = "Please select two elements for fusion.";
+        return;
+    }
+
+    console.log(`Attempting to fuse: ${fusionSlot1Element} + ${fusionSlot2Element}`);
+    if(fusionResultMessage) fusionResultMessage.textContent = `Fusing ${fusionSlot1Element} + ${fusionSlot2Element}...`;
+
+    const requestBody = {
+        element1: fusionSlot1Element,
+        element2: fusionSlot2Element
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/fuse_elements`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        const resultData = await response.json();
+
+        if (!response.ok) { // Handles 400 from backend for failed fusions (no seeds, no rule)
+            throw new Error(resultData.detail || `HTTP error! status: ${response.status}`);
+        }
+
+        // Success (200 OK) means fusion logic ran, message indicates outcome
+        if(fusionResultMessage) fusionResultMessage.textContent = resultData.message;
+
+        // Always re-fetch game state to update hand, discovered fusions, etc.
+        fetchGameStateAndRender();
+
+        // Clear slots after attempt
+        // document.getElementById('clear-fusion-slots-button').click(); // Programmatic click if preferred
+        fusionSlot1Element = null;
+        fusionSlot2Element = null;
+        const fusionSlot1Display = document.getElementById('fusion-slot-1');
+        const fusionSlot2Display = document.getElementById('fusion-slot-2');
+        if(fusionSlot1Display) {
+            fusionSlot1Display.textContent = "Slot 1";
+            fusionSlot1Display.classList.remove('filled');
+        }
+        if(fusionSlot2Display) {
+            fusionSlot2Display.textContent = "Slot 2";
+            fusionSlot2Display.classList.remove('filled');
+        }
+
+
+    } catch (error) {
+        console.error("Error fusing elements:", error);
+        if(fusionResultMessage) fusionResultMessage.textContent = `Fusion error: ${error.message}`;
+    }
+}
+
 
 async function handleSaveClick() {
     console.log("Save Game button clicked");
