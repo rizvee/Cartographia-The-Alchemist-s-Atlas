@@ -23,9 +23,13 @@ h1 {
     text-align: center;
 }
 
-#controls-container h2 {
+#controls-container h2, #controls-container h3 { /* Apply to all heading levels in controls */
     margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
 }
+
 
 /* Element Buttons */
 .element-button {
@@ -51,13 +55,10 @@ h1 {
 /* Map Container */
 #map-container {
     display: grid;
-    /* Assuming a 10x10 grid by default, adjust if map size changes often via JS */
-    /* grid-template-columns: repeat(10, 30px);  Fixed size based on tile width */
-    /* grid-template-rows: repeat(10, 30px); Fixed size based on tile height */
     border: 2px solid #333;
-    gap: 1px; /* Minimal gap between tiles */
-    margin: 0 auto; /* Center the map container if it has a fixed width */
-    width: fit-content; /* Or set a fixed width like 10 * (30px + 1px border) */
+    gap: 1px;
+    margin: 20px auto; /* Added top/bottom margin */
+    width: fit-content;
 }
 
 /* Tile Styling */
@@ -68,16 +69,17 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px; /* Adjust as needed for character display */
+    font-size: 16px;
     font-weight: bold;
-    background-color: #f0f0f0; /* Default for unstyled tiles */
-    color: #333; /* Default text color */
-    box-sizing: border-box; /* Important if using width/height with padding/border */
-    cursor: pointer; /* Indicate tiles are clickable */
+    background-color: #f0f0f0;
+    color: #333;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
 }
 
 .tile:hover {
-    outline: 2px solid #007bff; /* Highlight on hover */
+    outline: 2px solid #007bff;
 }
 
 
@@ -90,9 +92,7 @@ h1 {
 }
 
 #player-hand-container h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1em;
+    /* Handled by generic #controls-container h3 */
 }
 
 #player-hand-contents span {
@@ -121,25 +121,27 @@ h1 {
 }
 
 #objective-container h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1em;
-    color: #555;
+   /* Handled by generic #controls-container h3 */
+   color: #555; /* Specific color if needed */
 }
 
 #objective-description {
     font-style: italic;
     color: #333;
-    margin-top: 5px; /* Add some space if status message is shown */
+    margin-top: 5px;
 }
 
-.status-message {
+.status-message { /* For objective status and fusion result */
     color: green;
     font-weight: bold;
     padding: 5px 0;
-    min-height: 1.2em; /* Reserve space to prevent layout shift */
+    min-height: 1.2em;
     transition: opacity 0.5s ease-out;
 }
+#fusion-result-message.error { /* Specific error styling for fusion result */
+    color: red;
+}
+
 
 /* Alchemy Table Styling */
 #alchemy-table-container {
@@ -152,7 +154,7 @@ h1 {
 }
 
 #alchemy-table-container h2 {
-    margin-top: 0;
+ /* Handled by generic #controls-container h2 */
 }
 
 #fusion-slots {
@@ -164,56 +166,61 @@ h1 {
     display: inline-block;
     width: 100px;
     height: 30px;
-    line-height: 30px; /* Vertically center text */
+    line-height: 30px;
     border: 1px dashed #aaa;
     margin: 0 5px;
     padding: 0 5px;
     background-color: #fff;
     text-align: center;
-    cursor: pointer; /* To indicate they are clickable for adding elements */
-    color: #777; /* Default text color for empty slot */
+    cursor: pointer;
+    color: #777;
 }
 
 .fusion-slot.filled {
-    color: #000; /* Text color when an element is in slot */
+    color: #000;
     font-weight: bold;
 }
 
 
-#fusion-slots span:not(.fusion-slot) { /* For the "+" sign */
+#fusion-slots span:not(.fusion-slot) {
     margin: 0 5px;
 }
 
-#fuse-button, #clear-fusion-slots-button {
+#fuse-button, #clear-fusion-slots-button, #undo-button, #redo-button, #save-button, #load-button {
     padding: 8px 15px;
     margin: 10px 5px 5px 5px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #e0e0e0;
     cursor: pointer;
+    font-size: 14px; /* Consistent font size for all control buttons */
 }
-
-#fuse-button:hover, #clear-fusion-slots-button:hover {
+#fuse-button:hover, #clear-fusion-slots-button:hover,
+#undo-button:hover, #redo-button:hover,
+#save-button:hover, #load-button:hover {
     background-color: #c8c8c8;
 }
 
-#fusion-result-message {
-    min-height: 1.2em; /* Reserve space */
-    margin-top: 10px;
-    font-style: italic;
-}
 
 #discovered-fusions-container {
     margin-top: 15px;
-    text-align: left; /* Align list to the left within centered container */
+    text-align: left;
 }
 #discovered-fusions-container h4 {
     margin-bottom: 5px;
+     border-bottom: 1px solid #eee;
+    padding-bottom: 3px;
 }
 #discovered-fusions-display {
     font-size: 0.9em;
     color: #333;
     padding-left: 10px;
+    max-height: 100px; /* Limit height and make scrollable if many */
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #eee;
+    padding: 5px;
+    border-radius: 3px;
 }
 
 /* Tile Info Panel */
@@ -221,24 +228,24 @@ h1 {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 250px; /* Adjust as needed */
-    min-height: 100px; /* Adjust as needed */
+    width: 250px;
+    min-height: 100px;
     padding: 15px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 1000;
     font-size: 0.9em;
     color: #333;
-    opacity: 0; /* Initially hidden, made visible by JS on hover */
-    pointer-events: none; /* Prevent it from interfering with mouse events on map */
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.2s ease-in-out;
 }
 
 #tile-info-panel.visible {
     opacity: 1;
-    pointer-events: auto; /* Allow interaction if needed, though mostly display */
+    pointer-events: auto;
 }
 
 #tile-info-panel h4 {
@@ -255,85 +262,147 @@ h1 {
 #tile-info-panel strong {
     color: #555;
 }
+#tile-info-panel ul {
+    padding-left: 20px;
+    margin: 5px 0;
+}
+#tile-info-panel li {
+    font-size: 0.95em;
+}
+
+
+/* Feature Indicators on Tiles */
+.tile-feature {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    font-size: 0.6em;
+    font-weight: bold;
+    padding: 1px 2px;
+    border-radius: 3px;
+    line-height: 1;
+    z-index: 1;
+}
+
+.feature-ruins {
+    background-color: rgba(128, 0, 128, 0.7);
+    color: white;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+/* Lore Compendium Styling */
+#lore-compendium-container {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #fdf5e6; /* Parchment / Old paper color */
+    border: 1px solid #d2b48c; /* Tan border */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#lore-compendium-container h3 {
+    /* Handled by generic #controls-container h3 */
+    color: #8b4513; /* SaddleBrown */
+    text-align: center; /* Overriding generic h3 if needed */
+}
+
+#lore-entries-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 0.85em;
+    color: #4a3b31; /* Darker brown for text */
+}
+
+#lore-entries-list li {
+    padding: 5px 2px;
+    border-bottom: 1px dotted #d2b48c;
+}
+
+#lore-entries-list li:last-child {
+    border-bottom: none;
+}
 
 
 /* Terrain-Specific Tile Styling */
 .tile-empty {
-    background-color: #f0f0f0; /* Light grey for empty */
+    background-color: #f0f0f0;
     color: #aaa;
 }
 
 .tile-earth {
-    background-color: #964B00; /* Brown */
+    background-color: #964B00;
     color: white;
 }
 
-.tile-water, .tile-shallow-water { /* Grouping similar water types */
-    background-color: #3498db; /* Blue */
+.tile-water, .tile-shallow-water {
+    background-color: #3498db;
     color: white;
 }
 
 .tile-river {
-    background-color: #2980b9; /* Darker Blue for River */
+    background-color: #2980b9;
     color: white;
 }
 
 .tile-scorched-earth {
-    background-color: #592121; /* Dark, burnt red/brown */
+    background-color: #592121;
     color: #f0c6a2;
 }
 
-.tile-fire-patch { /* If this terrain type exists */
-    background-color: #e67e22; /* Orange */
+.tile-fire-patch {
+    background-color: #e67e22;
     color: white;
 }
 
 .tile-mountain {
-    background-color: #654321; /* Darker Brown for mountains */
+    background-color: #654321;
     color: #e0e0e0;
 }
 
 .tile-volcano {
-    background-color: #d35400; /* Fiery orange/red for volcano */
-    color: #ffff00; /* Yellow text for contrast */
+    background-color: #d35400;
+    color: #ffff00;
 }
 
 .tile-forest {
-    background-color: #228B22; /* Forest Green */
+    background-color: #228B22;
     color: white;
 }
 
 .tile-jungle {
-    background-color: #006400; /* Dark Green for Jungle */
+    background-color: #006400;
     color: white;
 }
 
 .tile-swamp {
-    background-color: #2C3E50; /* Dark Slate Blue/Grey for Swamp */
-    color: #A7D3A0; /* Light green text */
+    background-color: #2C3E50;
+    color: #A7D3A0;
 }
 
 .tile-desert {
-    background-color: #F4A460; /* Sandy Brown for Desert */
+    background-color: #F4A460;
     color: #333;
 }
 
 .tile-mud {
-    background-color: #7B5B3F; /* Muddy Brown */
+    background-color: #7B5B3F;
     color: #D3C4B8;
 }
 
-.tile-plain { /* If 'Plain' is a terrain type from Earth element */
-    background-color: #90EE90; /* Light Green for plains */
+.tile-plain {
+    background-color: #90EE90;
     color: #333;
 }
 
-.tile-wet-ground { /* If this terrain type exists (e.g. water on fire patch) */
-    background-color: #A9A9A9; /* Dark Gray for wet ground */
+.tile-wet-ground {
+    background-color: #A9A9A9;
     color: #f0f0f0;
 }
 
-.tile-burning-forest { /* If this terrain type exists */
-    background-color: #FF4500; /* OrangeRed for burning */
+.tile-burning-forest {
+    background-color: #FF4500;
     color: white;
 }

@@ -20,7 +20,6 @@ ELEMENT_PROPERTIES = {
     "Decay": {"echo_factor": 0.3, "base_strength": 25},
     "Steam": {"echo_factor": 0.7, "base_strength": 30},
     "Stone": {"echo_factor": 0.1, "base_strength": 35},
-    # Default if not listed: echo_factor 0.5, base_strength 25
 }
 
 TERRAIN_INTERACTIONS = {
@@ -80,6 +79,15 @@ DEFAULT_MAP_WIDTH = 10
 DEFAULT_MAP_HEIGHT = 10
 game_map = MapGrid(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT)
 
+# --- Test setup for water flow: Modify elevation of a few tiles ---
+if game_map.get_tile(0,0): game_map.get_tile(0,0).elevation = 1 # Source tile for flow
+if game_map.get_tile(0,1): game_map.get_tile(0,1).elevation = 0 # Target tile for flow
+if game_map.get_tile(1,0): game_map.get_tile(1,0).elevation = 0 # Another potential target
+if game_map.get_tile(1,1): game_map.get_tile(1,1).elevation = 1 # Same elevation, no flow expected here
+print("Test Water Flow Setup: Tile (0,0) elev=1, Tile (0,1) elev=0")
+# --- End Test setup ---
+
+
 player_hand = PlayerHand(initial_seeds=[
     ElementalSeed(name="Earth", description="A seed of terrestrial power."),
     ElementalSeed(name="Earth", description="A seed of terrestrial power."),
@@ -105,6 +113,59 @@ def _save_state_for_undo(current_game_map: MapGrid, current_player_hand: PlayerH
         history_stack.pop(0)
     redo_stack.clear()
     print(f"State saved for undo. History size: {len(history_stack)}, Redo size: {len(redo_stack)}")
+
+def _find_tile_coords(game_map_instance: MapGrid, tile_to_find: Tile) -> tuple[int, int] | None:
+    for y_idx, row in enumerate(game_map_instance.grid):
+        try:
+            x_idx = row.index(tile_to_find)
+            return x_idx, y_idx
+        except ValueError:
+            continue
+    return None
+
+def _handle_water_flow(game_map_instance: MapGrid, source_x: int, source_y: int, source_tile: Tile):
+    source_water_saturation = source_tile.elemental_saturation.get("Water", 0)
+    # Flow trigger condition: significant Water saturation and elevation > 0
+    if not (source_tile.elevation > 0 and source_water_saturation >= 70) : # Using >=70 as a threshold for "River-like" flow
+        return
+
+    print(f"Flow Check: Source tile ({source_x},{source_y}) is '{source_tile.terrain_type}' (Water: {source_water_saturation}, Elev: {source_tile.elevation}). Checking for flow targets.")
+
+    neighbors = game_map_instance.get_neighbors(source_x, source_y)
+    potential_targets = [n for n in neighbors if n.elevation < source_tile.elevation and \
+                         n.terrain_type not in ["River", "Shallow Water", "Water"]]
+
+    if not potential_targets:
+        print(f"Flow Check: No valid lower, non-water neighbors for tile ({source_x},{source_y}).")
+        return
+
+    target_tile = min(potential_targets, key=lambda t: t.elevation)
+
+    target_coords = _find_tile_coords(game_map_instance, target_tile)
+    if not target_coords:
+        print(f"Error: Could not find coordinates for target_tile during flow.")
+        return
+    target_x, target_y = target_coords
+
+    flow_amount = max(10, int(source_water_saturation * 0.2))
+    actual_flow_amount = min(flow_amount, source_water_saturation)
+
+    if actual_flow_amount > 0:
+        print(f"Flow Event: Water flowing from ({source_x},{source_y}) (Elev: {source_tile.elevation}, Water: {source_water_saturation}) to ({target_x},{target_y}) (Elev: {target_tile.elevation}, Water: {target_tile.elemental_saturation.get('Water',0)}). Amount: {actual_flow_amount}")
+
+        source_terrain_before_update = source_tile.terrain_type
+        target_terrain_before_update = target_tile.terrain_type
+
+        source_tile.elemental_saturation["Water"] = max(0, source_water_saturation - actual_flow_amount)
+        target_tile.elemental_saturation["Water"] = min(100, target_tile.elemental_saturation.get("Water", 0) + actual_flow_amount)
+
+        if source_tile.update_terrain_based_on_saturation():
+            print(f"  Source tile ({source_x},{source_y}) changed from '{source_terrain_before_update}' to '{source_tile.terrain_type}' due to water loss.")
+        if target_tile.update_terrain_based_on_saturation():
+            print(f"  Target tile ({target_x},{target_y}) changed from '{target_terrain_before_update}' to '{target_tile.terrain_type}' due to water gain.")
+    else:
+        print(f"Flow Check: Source tile ({source_x},{source_y}) has no significant water to flow ({source_water_saturation}).")
+
 
 def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, x: int, y: int, element_name: str, strength: int = -1) -> bool:
     _save_state_for_undo(current_game_map, hand_instance)
@@ -155,6 +216,10 @@ def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, 
     echo_factor = element_props.get("echo_factor", 0.5)
     echo_strength = int(current_strength * echo_factor)
 
+    # Store coordinates of neighbors affected by echo to check for flow from them later
+    # For this subtask, flow check is only from primary tile. This can be expanded.
+    # affected_neighbors_coords_for_flow = []
+
     if echo_strength > 0:
         neighbors = current_game_map.get_neighbors(x, y)
         print(f"Applying echo of '{element_name}' (base strength {current_strength}, factor {echo_factor} -> echo_strength {echo_strength}) to {len(neighbors)} neighbors.")
@@ -170,9 +235,9 @@ def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, 
             neighbor_tile.elemental_saturation[element_name] = neighbor_new_saturation
 
             neighbor_terrain_before_update = neighbor_tile.terrain_type
-            neighbor_terrain_changed = neighbor_tile.update_terrain_based_on_saturation()
-            if neighbor_terrain_changed:
+            if neighbor_tile.update_terrain_based_on_saturation():
                 print(f"    Success! Neighbor {i+1} (originally {neighbor_terrain_before_update}) terrain changed to '{neighbor_tile.terrain_type}'.")
+                # affected_neighbors_coords_for_flow.append(_find_tile_coords(current_game_map, neighbor_tile))
     else:
         print("Echo strength is 0, skipping neighbor effects.")
 
@@ -194,7 +259,13 @@ def apply_element_to_tile(current_game_map: MapGrid, hand_instance: PlayerHand, 
             print(f"Objective '{current_objective.description}' completed!")
             generate_new_objective()
 
+    # --- Handle Water Flow for the primary tile ---
+    source_tile_for_flow = current_game_map.get_tile(x,y)
+    if source_tile_for_flow:
+        _handle_water_flow(current_game_map, x, y, source_tile_for_flow)
+
     return True
+
 
 def undo_last_action() -> bool:
     global game_map, player_hand, history_stack, redo_stack, MAX_HISTORY_SIZE
@@ -237,7 +308,7 @@ def redo_next_action() -> bool:
     return True
 
 def save_game_to_file(filename: str = SAVE_GAME_FILENAME):
-    global game_map, player_hand, discovered_fusions, current_objective # Added current_objective
+    global game_map, player_hand, discovered_fusions, current_objective
     try:
         game_state_data = {
             'map': game_map.to_dict(),
@@ -338,24 +409,20 @@ def get_game_state():
 def fuse_elements_logic(hand_instance: PlayerHand, element1_name: str, element2_name: str) -> dict:
     global discovered_fusions, ELEMENTAL_FUSION_RULES, game_map
 
-    _save_state_for_undo(game_map, hand_instance) # Save state before any hand modification
+    _save_state_for_undo(game_map, hand_instance)
 
     if element1_name == element2_name:
         current_count = sum(1 for seed in hand_instance.seeds if seed.name == element1_name)
         if current_count < 2:
-            # history_stack.pop() # Optional: pop invalid action state (but what if user wants to undo to "before trying to fuse"?)
             return {"success": False, "message": f"You need at least two '{element1_name}' seeds to fuse them."}
     elif not (hand_instance.has_seed(element1_name) and hand_instance.has_seed(element2_name)):
-        # history_stack.pop()
         return {"success": False, "message": "You don't have the required seeds."}
 
     if not hand_instance.remove_seed(element1_name):
-        # history_stack.pop()
         return {"success": False, "message": f"Failed to remove first seed {element1_name}."}
 
     if not hand_instance.remove_seed(element2_name):
-        hand_instance.add_seed(ElementalSeed(name=element1_name, description="Restored after failed fusion attempt.")) # Rollback
-        # history_stack.pop() # State changed (added seed back), then changed again by pop. Better to let undo handle.
+        hand_instance.add_seed(ElementalSeed(name=element1_name, description="Restored after failed fusion attempt."))
         return {"success": False, "message": f"Failed to remove second seed {element2_name} after removing first."}
 
     fusion_key = frozenset({element1_name, element2_name})
@@ -372,11 +439,9 @@ def fuse_elements_logic(hand_instance: PlayerHand, element1_name: str, element2_
                 message = f"You combined {element1_name} and {element2_name} to discover {result_name}, but your hand is full!"
         else:
             message = f"You combined {element1_name} and {element2_name} to discover the concept of {result_name}!"
-        # _save_state_for_undo was already called.
         return {"success": True, "result_name": result_name, "message": message, "is_seed": rule_result.get("is_usable_seed", False)}
     else:
         message = "These elements do not seem to react."
-        # _save_state_for_undo was already called.
         return {"success": False, "message": message}
 
 def get_player_hand_details():

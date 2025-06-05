@@ -8,12 +8,16 @@ class Tile:
     }
     ALL_ELEMENTS = ['Earth', 'Water', 'Fire', 'Air', 'Life', 'Decay', 'Aether']
 
-    def __init__(self, terrain_type="Empty", initial_saturation=None, elevation=0):
+    def __init__(self, terrain_type="Empty", initial_saturation=None, elevation=0, feature: str | None = None):
         self.terrain_type = terrain_type
         self.elevation = elevation
+        self.feature = feature # New attribute
         if not isinstance(self.elevation, int):
             print(f"Warning: Elevation '{self.elevation}' is not an int. Setting to 0.")
             self.elevation = 0
+        if self.feature is not None and not isinstance(self.feature, str):
+            print(f"Warning: Feature '{self.feature}' is not a string. Setting to None.")
+            self.feature = None
         self.elemental_saturation = self._initialize_saturation(terrain_type, initial_saturation)
 
     def _initialize_saturation(self, terrain_type, initial_saturation):

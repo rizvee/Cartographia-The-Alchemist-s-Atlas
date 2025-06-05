@@ -20,7 +20,7 @@ async function fetchGameStateAndRender() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        cachedGameState = await response.json(); // Store the fetched game state
+        cachedGameState = await response.json();
         renderGameUI(cachedGameState);
     } catch (error) {
         console.error('Error fetching game state:', error);
@@ -32,6 +32,8 @@ async function fetchGameStateAndRender() {
         if(playerHandContents) playerHandContents.textContent = 'Error loading hand.';
         const objectiveDescriptionElement = document.getElementById('objective-description');
         if(objectiveDescriptionElement) objectiveDescriptionElement.textContent = 'Error loading objective.';
+        const loreListElement = document.getElementById('lore-entries-list');
+        if(loreListElement) loreListElement.innerHTML = '<li>Error loading discoveries.</li>';
     }
 }
 
@@ -40,11 +42,8 @@ function renderGameUI(gameStateToRender) {
         console.error("No game state to render.");
         return;
     }
-    // Update cachedGameState with the latest full state
-    // This ensures that any part of the UI rendering uses the most current state.
     cachedGameState = gameStateToRender;
 
-    // Render Map
     if (cachedGameState.map_details) {
         renderMap(cachedGameState.map_details);
     } else {
@@ -53,7 +52,6 @@ function renderGameUI(gameStateToRender) {
         if (mapContainer) mapContainer.innerHTML = '<p>Map data missing in game state.</p>';
     }
 
-    // Render Player Hand and update buttons
     const handCounts = {};
     if (cachedGameState.player_hand) {
         cachedGameState.player_hand.forEach(seedName => {
@@ -62,10 +60,8 @@ function renderGameUI(gameStateToRender) {
     }
     renderPlayerHand(handCounts, cachedGameState.player_hand_count);
 
-    // Render Current Objective
     const objectiveDescriptionElement = document.getElementById('objective-description');
     const objectiveStatusMessageElement = document.getElementById('objective-status-message');
-
     if (objectiveDescriptionElement) {
         if (cachedGameState.current_objective && cachedGameState.current_objective.description) {
             if (displayedObjectiveId !== null && cachedGameState.current_objective.id !== displayedObjectiveId) {
@@ -96,7 +92,6 @@ function renderGameUI(gameStateToRender) {
         console.error("Objective description element not found!");
     }
 
-    // Render Discovered Fusions
     const discoveredFusionsDisplay = document.getElementById('discovered-fusions-display');
     if (discoveredFusionsDisplay) {
         if (cachedGameState.discovered_fusions && cachedGameState.discovered_fusions.length > 0) {
@@ -106,6 +101,35 @@ function renderGameUI(gameStateToRender) {
         }
     } else {
         console.error("Discovered fusions display element not found!");
+    }
+
+    // Render Lore Compendium
+    if (cachedGameState.discovered_lore) {
+        renderLoreCompendium(cachedGameState.discovered_lore);
+    } else {
+        renderLoreCompendium([]); // Call with empty list if not present
+        console.log("No 'discovered_lore' field in game state, rendering empty lore.");
+    }
+}
+
+function renderLoreCompendium(loreEntries) {
+    const loreListElement = document.getElementById('lore-entries-list');
+    if (!loreListElement) {
+        console.error("Lore entries list element 'lore-entries-list' not found!");
+        return;
+    }
+    loreListElement.innerHTML = '';
+
+    if (loreEntries && loreEntries.length > 0) {
+        loreEntries.forEach(entryText => {
+            const listItem = document.createElement('li');
+            listItem.textContent = entryText;
+            loreListElement.appendChild(listItem);
+        });
+    } else {
+        const listItem = document.createElement('li');
+        listItem.textContent = "No discoveries yet.";
+        loreListElement.appendChild(listItem);
     }
 }
 
@@ -224,13 +248,26 @@ function renderMap(mapDetails) {
 
     if (mapDetails && mapDetails.tiles && mapDetails.width && mapDetails.height) {
         mapDetails.tiles.forEach((row, y) => {
-            row.forEach((tileData, x) => { // tileData is now expected to be an object
+            row.forEach((tileData, x) => {
                 const tileDiv = document.createElement('div');
                 tileDiv.classList.add('tile');
-                const terrainType = tileData.terrain_type || 'unknown'; // Default if terrain_type is missing
+                const terrainType = tileData.terrain_type || 'unknown';
                 const terrainClass = `tile-${terrainType.toLowerCase().replace(/\s+/g, '-')}`;
                 tileDiv.classList.add(terrainClass);
-                tileDiv.textContent = terrainType.charAt(0);
+
+                const terrainCharSpan = document.createElement('span');
+                terrainCharSpan.classList.add('terrain-char');
+                terrainCharSpan.textContent = terrainType.charAt(0);
+                tileDiv.appendChild(terrainCharSpan);
+
+                if (tileData.feature) {
+                    const featureSpan = document.createElement('span');
+                    featureSpan.classList.add('tile-feature');
+                    featureSpan.classList.add(`feature-${tileData.feature.toLowerCase().replace(/\s+/g, '-')}`);
+                    featureSpan.textContent = tileData.feature.charAt(0).toUpperCase();
+                    tileDiv.appendChild(featureSpan);
+                }
+
                 tileDiv.dataset.x = x;
                 tileDiv.dataset.y = y;
                 tileDiv.addEventListener('click', handleTileClick);
@@ -265,7 +302,7 @@ async function handleTileClick(event) {
         });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.detail || `HTTP error! status: ${response.status}`);
-        cachedGameState = responseData; // Update cache
+        cachedGameState = responseData;
         renderGameUI(cachedGameState);
     } catch (error) {
         console.error('Error applying element:', error);
@@ -280,7 +317,7 @@ async function handleUndoClick() {
         const response = await fetch(apiUrl, { method: 'POST' });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.detail || "Unknown error during undo.");
-        cachedGameState = responseData; // Update cache
+        cachedGameState = responseData;
         renderGameUI(cachedGameState);
         selectedElement = null;
         const selectedElementDisplay = document.getElementById('selected-element-display');
@@ -298,7 +335,7 @@ async function handleRedoClick() {
         const response = await fetch(apiUrl, { method: 'POST' });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.detail || "Unknown error during redo.");
-        cachedGameState = responseData; // Update cache
+        cachedGameState = responseData;
         renderGameUI(cachedGameState);
         selectedElement = null;
         const selectedElementDisplay = document.getElementById('selected-element-display');
@@ -330,7 +367,7 @@ async function handleLoadClick() {
         const response = await fetch(apiUrl, { method: 'POST' });
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.detail || "Unknown error during load.");
-        cachedGameState = responseData; // Update cache
+        cachedGameState = responseData;
         renderGameUI(cachedGameState);
         selectedElement = null;
         const selectedElementDisplay = document.getElementById('selected-element-display');
@@ -359,8 +396,11 @@ async function handleFuseClick() {
         const resultData = await response.json();
         if (!response.ok) throw new Error(resultData.detail || `HTTP error! status: ${response.status}`);
         if(fusionResultMessage) fusionResultMessage.textContent = resultData.message;
-        cachedGameState = await fetch(`${API_BASE_URL}/api/game_state`).then(res => res.json()); // Re-fetch full state
+
+        // Re-fetch full game state to update hand, discovered fusions, and potentially lore
+        cachedGameState = await fetch(`${API_BASE_URL}/api/game_state`).then(res => res.json());
         renderGameUI(cachedGameState);
+
         fusionSlot1Element = null; fusionSlot2Element = null;
         const fSlot1 = document.getElementById('fusion-slot-1');
         const fSlot2 = document.getElementById('fusion-slot-2');
@@ -372,13 +412,12 @@ async function handleFuseClick() {
     }
 }
 
-// --- Tile Info Panel Logic ---
 function handleTileMouseOver(event) {
     if (!cachedGameState || !cachedGameState.map_details || !cachedGameState.map_details.grid) return;
     const tileDiv = event.currentTarget;
     const x = parseInt(tileDiv.dataset.x, 10);
     const y = parseInt(tileDiv.dataset.y, 10);
-    const tileData = cachedGameState.map_details.grid[y]?.[x]; // Accessing full tile data object
+    const tileData = cachedGameState.map_details.grid[y]?.[x];
 
     const infoPanel = document.getElementById('tile-info-panel');
     if (infoPanel && tileData) {
@@ -386,6 +425,11 @@ function handleTileMouseOver(event) {
         content += `<p><strong>Coords:</strong> (${x}, ${y})</p>`;
         content += `<p><strong>Terrain:</strong> ${tileData.terrain_type || 'N/A'}</p>`;
         content += `<p><strong>Elevation:</strong> ${tileData.elevation !== undefined ? tileData.elevation : 'N/A'}</p>`;
+        if (tileData.feature) {
+            content += `<p><strong>Feature:</strong> ${tileData.feature}</p>`;
+        } else {
+            content += `<p><strong>Feature:</strong> None</p>`;
+        }
 
         content += "<p><strong>Saturation:</strong>";
         if (tileData.elemental_saturation && Object.keys(tileData.elemental_saturation).length > 0) {
@@ -395,7 +439,7 @@ function handleTileMouseOver(event) {
             if (saturationEntries.length > 0) {
                 content += "<ul>";
                 saturationEntries.forEach(([key, value]) => {
-                    content += `<li>${key}: ${value.toFixed(0)}</li>`; // Format to integer
+                    content += `<li>${key}: ${value.toFixed(0)}</li>`;
                 });
                 content += "</ul>";
             } else {
